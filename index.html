@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Malla Curricular Derecho</title>
-  <link rel="stylesheet" href="estilos.css">
+  <meta charset="UTF-8" />
+  <title>Malla Curricular – Derecho</title>
+  <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
   <h1>MALLA CURRICULAR DE DERECHO</h1>
@@ -11,20 +11,22 @@
   <div id="malla"></div>
 
   <div id="leyenda">
-    <div class="leyenda-item"><div class="leyenda-box leyenda-ob"></div> Obligatorio</div>
-    <div class="leyenda-item"><div class="leyenda-box leyenda-eh"></div> Electivo Humanidades (EH)</div>
-    <div class="leyenda-item"><div class="leyenda-box leyenda-ee"></div> Electivo de Especialidad (EE1–EE4)</div>
+    <div class="leyenda-item">
+      <div class="leyenda-box leyenda-ob"></div> Obligatorio
+    </div>
+    <div class="leyenda-item">
+      <div class="leyenda-box leyenda-eh"></div> Electivo Humanidades (EH)
+    </div>
+    <div class="leyenda-item">
+      <div class="leyenda-box leyenda-ee"></div> Electivo de Especialidad (EE1–EE4)
+    </div>
   </div>
 
-  <button onclick="desmarcarTodo()">Desmarcar todos los cursos</button>
+  <button id="btn-reset">Desmarcar todos los cursos</button>
 
+  <!-- 1) Datos de cursos -->
+  <script src="datos-cursos.js"></script>
+  <!-- 2) Lógica de la malla -->
   <script src="script.js"></script>
-  <script>
-    function desmarcarTodo() {
-      document.querySelectorAll('.curso').forEach(div => {
-        div.classList.remove('completado');
-      });
-    }
-  </script>
 </body>
 </html>
