@@ -96,3 +96,32 @@ document.getElementById("btn-reset").addEventListener("click", () => {
 });
 
 renderMalla(CURSOS);
+
+function recalcularCreditos() {
+  // Reinicia conteo
+  for (const k in creditosPorTipo) creditosPorTipo[k] = 0;
+
+  // Lee completados actuales
+  const completados = new Set(leerCompletados());
+  CURSOS.forEach(c => {
+    if (completados.has(c.id)) creditosPorTipo[c.tipo] += c.creditos;
+  });
+
+  // Pinta en pantalla
+  const ul = document.getElementById("creditos-list");
+  ul.innerHTML = ""; // limpia
+
+  // Orden de salida
+  const orden = ["OB","EH","EE1","EE2","EE3","EE4"];
+  orden.forEach(t =>{
+    const li = document.createElement("li");
+    li.textContent = `${t}: ${creditosPorTipo[t]} créditos`;
+    ul.appendChild(li);
+  });
+
+  // Total general
+  const total = orden.reduce((s,t)=>s+creditosPorTipo[t],0);
+  document.getElementById("creditos-total").textContent =
+    `Total aprobados: ${total} créditos`;
+}
+
