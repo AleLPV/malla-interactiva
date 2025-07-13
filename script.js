@@ -1,31 +1,31 @@
 const cursos = [
-  // SEMESTRE I
-  { id: "DE101", nombre: "Comunicación", ciclo: "I", requisitos: [] },
-  { id: "DE102", nombre: "Introducción a la Filosofía", ciclo: "I", requisitos: [] },
-  { id: "DE103", nombre: "Introducción a la Vida Universitaria", ciclo: "I", requisitos: [] },
-  { id: "DE104", nombre: "Introducción al Estudio del Derecho", ciclo: "I", requisitos: [] },
-  { id: "DE105", nombre: "Metodología del Estudio", ciclo: "I", requisitos: [] },
-  { id: "DE106", nombre: "Taller de Liderazgo", ciclo: "I", requisitos: [] },
-  { id: "DE107", nombre: "Teatro", ciclo: "I", requisitos: [] },
+  // SEMESTRE 1
+  { id: "DE101", nombre: "Comunicación", ciclo: "1", requisitos: [] },
+  { id: "DE102", nombre: "Introducción a la Filosofía", ciclo: "1", requisitos: [] },
+  { id: "DE103", nombre: "Introducción a la Vida Universitaria", ciclo: "1", requisitos: [] },
+  { id: "DE104", nombre: "Introducción al Estudio del Derecho", ciclo: "1", requisitos: [] },
+  { id: "DE105", nombre: "Metodología del Estudio", ciclo: "1", requisitos: [] },
+  { id: "DE106", nombre: "Taller de Liderazgo", ciclo: "1", requisitos: [] },
+  { id: "DE107", nombre: "Teatro", ciclo: "1", requisitos: [] },
 
-  // SEMESTRE II
-  { id: "DE108", nombre: "Antropología Filosófica y Teológica", ciclo: "II", requisitos: ["DE102"] },
-  { id: "DE109", nombre: "Comunicación I", ciclo: "II", requisitos: ["DE101"] },
-  { id: "DE110", nombre: "Historia de la Cultura Occidental I", ciclo: "II", requisitos: ["DE102"] },
-  { id: "DE111", nombre: "Historia General del Derecho", ciclo: "II", requisitos: ["DE104", "DE105"] },
-  { id: "DE112", nombre: "Retórica y Dialéctica", ciclo: "II", requisitos: ["DE104", "DE107", "DE101"] },
-  { id: "DE113", nombre: "Conciencia Jurídica del Peruano", ciclo: "II", requisitos: ["DE104", "DE105", "DE106"] },
-  { id: "DE114", nombre: "Apreciación Artística (EH)", ciclo: "II", requisitos: [] },
-  { id: "DE115", nombre: "Apreciación Literaria (EH)", ciclo: "II", requisitos: [] },
+  // SEMESTRE 2
+  { id: "DE108", nombre: "Antropología Filosófica y Teológica", ciclo: "2", requisitos: ["DE102"] },
+  { id: "DE109", nombre: "Comunicación I", ciclo: "2", requisitos: ["DE101"] },
+  { id: "DE110", nombre: "Historia de la Cultura Occidental I", ciclo: "2", requisitos: ["DE102"] },
+  { id: "DE111", nombre: "Historia General del Derecho", ciclo: "2", requisitos: ["DE104", "DE105"] },
+  { id: "DE112", nombre: "Retórica y Dialéctica", ciclo: "2", requisitos: ["DE104", "DE107", "DE101"] },
+  { id: "DE113", nombre: "Conciencia Jurídica del Peruano", ciclo: "2", requisitos: ["DE104", "DE105", "DE106"] },
+  { id: "DE114", nombre: "Apreciación Artística (EH)", ciclo: "2", requisitos: [] },
+  { id: "DE115", nombre: "Apreciación Literaria (EH)", ciclo: "2", requisitos: [] },
 
-  // SEMESTRE III
-  { id: "DE116", nombre: "Bases Romanistas del Derecho", ciclo: "III", requisitos: ["DE111"] },
-  { id: "DE117", nombre: "Ciencia Política", ciclo: "III", requisitos: ["DE102", "DE108"] },
-  { id: "DE118", nombre: "Derecho Natural", ciclo: "III", requisitos: ["DE112"] },
-  { id: "DE119", nombre: "Historia de la Cultura Occidental II", ciclo: "III", requisitos: ["DE110"] },
-  { id: "DE120", nombre: "Lógica y Gnoseología", ciclo: "III", requisitos: ["DE108"] },
-  { id: "DE121", nombre: "Matemática para Abogados", ciclo: "III", requisitos: ["DE112"] },
-  { id: "DE122", nombre: "Sociología y Derecho", ciclo: "III", requisitos: ["DE112"] }
+  // SEMESTRE 3
+  { id: "DE116", nombre: "Bases Romanistas del Derecho", ciclo: "3", requisitos: ["DE111"] },
+  { id: "DE117", nombre: "Ciencia Política", ciclo: "3", requisitos: ["DE102", "DE108"] },
+  { id: "DE118", nombre: "Derecho Natural", ciclo: "3", requisitos: ["DE112"] },
+  { id: "DE119", nombre: "Historia de la Cultura Occidental II", ciclo: "3", requisitos: ["DE110"] },
+  { id: "DE120", nombre: "Lógica y Gnoseología", ciclo: "3", requisitos: ["DE108"] },
+  { id: "DE121", nombre: "Matemática para Abogados", ciclo: "3", requisitos: ["DE112"] },
+  { id: "DE122", nombre: "Sociología y Derecho", ciclo: "3", requisitos: ["DE112"] }
 ];
 
 // Agrupar cursos por ciclo
@@ -63,7 +63,7 @@ for (const ciclo in cursosPorCiclo) {
 
     div.appendChild(tooltip);
 
-    // Clic solo marca como completado
+    // Solo marcar como completado al hacer clic
     div.addEventListener("click", () => {
       div.classList.toggle("completado");
     });
