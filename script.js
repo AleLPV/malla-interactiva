@@ -7,6 +7,16 @@ const leerCompletados = () =>
 const guardarCompletados = (lista) =>
   localStorage.setItem(LS_KEY, JSON.stringify(lista));
 
+// Objeto donde llevamos la cuenta de créditos aprobados
+const creditosPorTipo = {
+  OB: 0,
+  EH: 0,
+  EE1: 0,
+  EE2: 0,
+  EE3: 0,
+  EE4: 0
+};
+
 /* ---------- 2.  Render ---------- */
 function renderMalla(cursos) {
   const contenedor = document.getElementById("malla");
