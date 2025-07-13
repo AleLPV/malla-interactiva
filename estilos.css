@@ -9,6 +9,7 @@ body {
 h1 {
   color: #5e35b1;
   margin-bottom: 30px;
+  text-transform: uppercase;
 }
 
 #malla {
@@ -19,7 +20,7 @@ h1 {
 }
 
 .semestre {
-  background: #ede7f6;
+  background: #d1c4e9; /* MÁS FUERTE que el fondo */
   border-radius: 10px;
   padding: 10px;
   width: 250px;
@@ -27,7 +28,7 @@ h1 {
 }
 
 .semestre h2 {
-  background-color: #5e35b1;
+  background-color: #512da8;
   color: white;
   padding: 10px;
   margin: 0 -10px 10px -10px;
@@ -50,9 +51,9 @@ h1 {
 }
 
 .curso.completado {
-  background-color: #c8e6c9;
+  background-color: #bbdefb; /* AZUL CLARO cuando se completa */
   text-decoration: line-through;
-  color: #388e3c;
+  color: #0d47a1;
 }
 
 .curso .tooltip {
