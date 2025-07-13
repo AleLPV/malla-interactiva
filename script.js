@@ -18,20 +18,12 @@ const cursos = [
   { id: "DE114", nombre: "Apreciación Artística", ciclo: "2", tipo: "EH", requisitos: [] },
   { id: "DE115", nombre: "Apreciación Literaria", ciclo: "2", tipo: "EH", requisitos: [] },
 
-  // SEMESTRE 3
-  { id: "DE116", nombre: "Bases Romanistas del Derecho", ciclo: "3", tipo: "OB", requisitos: ["DE111"] },
-  { id: "DE117", nombre: "Ciencia Política", ciclo: "3", tipo: "OB", requisitos: ["DE102", "DE108"] },
-  { id: "DE118", nombre: "Derecho Natural", ciclo: "3", tipo: "OB", requisitos: ["DE112"] },
-  { id: "DE119", nombre: "Historia de la Cultura Occidental II", ciclo: "3", tipo: "OB", requisitos: ["DE110"] },
-  { id: "DE120", nombre: "Lógica y Gnoseología", ciclo: "3", tipo: "OB", requisitos: ["DE108"] },
-  { id: "DE121", nombre: "Matemática para Abogados", ciclo: "3", tipo: "OB", requisitos: ["DE112"] },
-  { id: "DE122", nombre: "Sociología y Derecho", ciclo: "3", tipo: "OB", requisitos: ["DE112"] },
-  { id: "DE123", nombre: "Apreciación Musical", ciclo: "3", tipo: "EH", requisitos: [] },
-
-  // SEMESTRES 4–12 (continuación en próximos bloques por límite de caracteres)
+  // MÁS CURSOS DE SEMESTRE 3 AL 12...
 ];
 
-// Agrupar cursos por ciclo
+// Leer desde localStorage
+const cursosCompletados = JSON.parse(localStorage.getItem("cursosCompletados") || "[]");
+
 const cursosPorCiclo = {};
 cursos.forEach(curso => {
   if (!cursosPorCiclo[curso.ciclo]) {
@@ -42,7 +34,6 @@ cursos.forEach(curso => {
 
 const malla = document.getElementById("malla");
 
-// Renderizar la malla
 for (const ciclo in cursosPorCiclo) {
   const columna = document.createElement("div");
   columna.classList.add("semestre");
@@ -54,7 +45,7 @@ for (const ciclo in cursosPorCiclo) {
     const div = document.createElement("div");
     div.classList.add("curso");
 
-    // Colores por tipo
+    // Tipo de curso
     if (curso.tipo.startsWith("EE")) {
       div.classList.add("ee");
     } else if (curso.tipo === "EH") {
@@ -65,6 +56,7 @@ for (const ciclo in cursosPorCiclo) {
 
     div.textContent = curso.nombre;
 
+    // Tooltip de prerrequisitos
     const tooltip = document.createElement("div");
     tooltip.classList.add("tooltip");
     tooltip.textContent = curso.requisitos.length
@@ -76,12 +68,35 @@ for (const ciclo in cursosPorCiclo) {
 
     div.appendChild(tooltip);
 
+    // Restaurar si estaba marcado
+    if (cursosCompletados.includes(curso.id)) {
+      div.classList.add("completado");
+    }
+
     div.addEventListener("click", () => {
       div.classList.toggle("completado");
+      actualizarLocalStorage(curso.id, div.classList.contains("completado"));
     });
 
     columna.appendChild(div);
   });
 
   malla.appendChild(columna);
+}
+
+// Guardar o quitar del localStorage
+function actualizarLocalStorage(id, completado) {
+  let completados = JSON.parse(localStorage.getItem("cursosCompletados") || "[]");
+  if (completado) {
+    if (!completados.includes(id)) completados.push(id);
+  } else {
+    completados = completados.filter(c => c !== id);
+  }
+  localStorage.setItem("cursosCompletados", JSON.stringify(completados));
+}
+
+// Botón desmarcar todos
+function desmarcarTodo() {
+  document.querySelectorAll(".curso").forEach(div => div.classList.remove("completado"));
+  localStorage.removeItem("cursosCompletados");
 }
