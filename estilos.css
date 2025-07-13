@@ -89,3 +89,27 @@ button{
   transition:background-color .3s;
 }
 button:hover{background:#311b92;}
+
+#creditos-box{
+  margin-top:40px;
+  display:inline-block;
+  text-align:left;
+  background:#fff;
+  padding:15px 20px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
+#creditos-box h3{
+  margin:0 0 10px;
+  color:#5e35b1;
+}
+#creditos-list{
+  list-style:none;
+  margin:0 0 10px;
+  padding:0;
+  font-size:14px;
+}
+#creditos-list li{
+  margin:2px 0;
+}
