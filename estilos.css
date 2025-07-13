@@ -55,7 +55,6 @@ h1 {
   color: #388e3c;
 }
 
-/* Mostrar tooltip al hacer hover */
 .curso .tooltip {
   display: none;
   position: absolute;
@@ -74,7 +73,6 @@ h1 {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* Mostrar el tooltip solo cuando el mouse está encima */
 .curso:hover .tooltip {
   display: block;
 }
