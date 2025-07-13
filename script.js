@@ -33,7 +33,7 @@ function renderMalla(cursos) {
       porCiclo[ciclo].forEach((curso) => {
         const div = document.createElement("div");
         div.className = `curso ${cssTipo(curso.tipo)}`;
-        div.textContent = curso.nombre;
+        div.textContent = (curso.tipo.startsWith("EE") ? `${curso.tipo} - ` : "") + curso.nombre;
 
         if (completados.has(curso.id)) div.classList.add("completado");
 
