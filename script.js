@@ -63,8 +63,8 @@ for (const ciclo in cursosPorCiclo) {
 
     div.appendChild(tooltip);
 
+    // Clic solo marca como completado
     div.addEventListener("click", () => {
-      tooltip.style.display = tooltip.style.display === "block" ? "none" : "block";
       div.classList.toggle("completado");
     });
 
