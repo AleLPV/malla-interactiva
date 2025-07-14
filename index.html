@@ -8,33 +8,41 @@
 <body>
   <h1>MALLA CURRICULAR DE DERECHO</h1>
 
+  <!-- Contenedor principal -->
   <div id="malla"></div>
+
   <!-- Panel de créditos -->
-<div id="creditos-box">
-  <h3>Créditos aprobados</h3>
-  <ul id="creditos-list">
-    <!-- Se rellena por JS -->
-  </ul>
-  <strong id="creditos-total"></strong>
-</div>
-  
+  <div id="creditos-box">
+    <h3>Créditos aprobados</h3>
+    <ul id="creditos-list">
+      <!-- Se rellena por JS -->
+    </ul>
+    <strong id="creditos-total"></strong>
+
+    <!-- 🔵 Barra de progreso -->
+    <div id="barra-container">
+      <div id="barra-progreso"></div>
+    </div>
+  </div>
+
+  <!-- Leyenda de colores -->
   <div id="leyenda">
     <div class="leyenda-item">
       <div class="leyenda-box leyenda-ob"></div> Obligatorio
     </div>
     <div class="leyenda-item">
-      <div class="leyenda-box leyenda-eh"></div> Electivo Humanidades (EH)
+      <div class="leyenda-box leyenda-eh"></div> Electivo Humanidades (EH)
     </div>
     <div class="leyenda-item">
-      <div class="leyenda-box leyenda-ee"></div> Electivo de Especialidad (EE1–EE4)
+      <div class="leyenda-box leyenda-ee"></div> Electivo de Especialidad (EE1–EE4)
     </div>
   </div>
 
+  <!-- Botón para reiniciar -->
   <button id="btn-reset">Desmarcar todos los cursos</button>
 
-  <!-- 1) Datos de cursos -->
-<script src="datos-cursos-completo.js"></script>
-  <!-- 2) Lógica de la malla -->
+  <!-- Scripts -->
+  <script src="datos-cursos-completo.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
