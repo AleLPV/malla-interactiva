@@ -39,7 +39,6 @@ const CURSOS = [
   { id: "DE16-0430", nombre: "Teología I", ciclo: 4, tipo: "EH", creditos: 3, requisitos: ["DE16-0208"] }
 ];
 
-/* ------------- BLOQUE 2 (semestres 5 al 8) ------------- */
   /* SEMESTRE 5 */
   { id: "DE16-0531", nombre: "Acto Jurídico", ciclo: 5, tipo: "OB", creditos: 4, requisitos: ["DE16-0425"] },
   { id: "DE16-0532", nombre: "Derecho Administrativo I", ciclo: 5, tipo: "OB", creditos: 3, requisitos: ["DE16-0424"] },
@@ -83,9 +82,6 @@ const CURSOS = [
   { id: "DE16-0864", nombre: "Seminario de Criminalística, Ciencias Forenses y Criminología", ciclo: 8, tipo: "EE1", creditos: 2, requisitos: ["DE16-0751", "DE16-0860", "DE16-0428"] },
   { id: "DE16-0865", nombre: "Derecho de la Integración", ciclo: 8, tipo: "EE2", creditos: 2, requisitos: ["DE16-0640"] }
 
-
-/* ------------- BLOQUE 3 (semestres 9 al 12) ------------- */
-
   /* SEMESTRE 9 */
   { id: "DE16-0966", nombre: "Derecho de Contratos II: Contratos Típicos", ciclo: 9, tipo: "OB", creditos: 4, requisitos: ["DE16-0857"] },
   { id: "DE16-0967", nombre: "Derecho Laboral II: D.L. Colectivo y D. Previsional", ciclo: 9, tipo: "OB", creditos: 3, requisitos: ["DE16-0858"] },
@@ -128,6 +124,4 @@ const CURSOS = [
   { id: "DE16-1209", nombre: "Arbitraje Comercial Internacional y de Inversiones", ciclo: 12, tipo: "EE1-EE2", creditos: 2, requisitos: ["DE16-1075", "DE16-1188"] },
   { id: "DE16-1299", nombre: "Derecho de la Energía", ciclo: 12, tipo: "EE4", creditos: 2, requisitos: ["DE16-1192"] },
   { id: "DE16-1210", nombre: "Dirección y Liderazgo Estratégico", ciclo: 12, tipo: "EE3-EE4", creditos: 2, requisitos: ["DE16-0748", "DE16-1077", "DE16-0106"] }
-];
-
 ];
