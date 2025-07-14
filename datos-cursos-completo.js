@@ -56,7 +56,7 @@ const CURSOS = [
   /* SEMESTRE 7 */
   { id: "DE16-0748", nombre: "Contabilidad y Análisis Financiero", ciclo: 7, tipo: "OB", creditos: 2, requisitos: [] },
   { id: "DE16-0749", nombre: "Derecho de Obligaciones", ciclo: 7, tipo: "OB", creditos: 4, requisitos: ["DE16-0642"] },
-  { id: "DE16-0750", nombre: "Derecho Procesal Civil II", ciclo: 7, tipo: "OB", creditos: 3, requisitos: ["DE16-0641", "DE16-0638"] },
+  { id: "DE16-0750", nombre: "Derecho Procesal Civil II", ciclo: 7, tipo: "OB", creditos: 3, requisitos: ["DE16-0641", "DE16-0638", "DE16-0642"] },
   { id: "DE16-0751", nombre: "Derecho Procesal Constitucional", ciclo: 7, tipo: "OB", creditos: 4, requisitos: ["DE16-0638"] },
   { id: "DE16-0752", nombre: "Derecho Tributario I: PP.GG. y Código Tributario", ciclo: 7, tipo: "OB", creditos: 3, requisitos: ["DE16-0639"] },
   { id: "DE16-0753", nombre: "Historia del Perú I", ciclo: 7, tipo: "OB", creditos: 3, requisitos: ["DE16-0210"] },
@@ -72,7 +72,7 @@ const CURSOS = [
   { id: "DE16-0861", nombre: "Derecho Tributario II: Impuesto a la Renta", ciclo: 8, tipo: "OB", creditos: 3, requisitos: ["DE16-0748", "DE16-0752"] },
   { id: "DE16-0862", nombre: "Historia del Perú II", ciclo: 8, tipo: "OB", creditos: 3, requisitos: ["DE16-0753"] },
   { id: "DE16-0863", nombre: "Derecho y Biotecnología", ciclo: 8, tipo: "EE2", creditos: 2, requisitos: ["DE16-0751", "DE16-0640"] },
-  { id: "DE16-0864", nombre: "Seminario de Criminalística, Ciencias Forenses y Criminología", ciclo: 8, tipo: "EE1", creditos: 2, requisitos: ["DE16-0751", "DE16-0860", "DE16-0428"] },
+  { id: "DE16-0864", nombre: "Seminario de Criminalística, Ciencias Forenses y Criminología", ciclo: 8, tipo: "EE1", creditos: 2, requisitos: ["DE16-0535", "DE16-0534", "DE16-0428"] },
   { id: "DE16-0865", nombre: "Derecho de la Integración", ciclo: 8, tipo: "EE2", creditos: 2, requisitos: ["DE16-0640"] },
 
   // BLOQUE 3: Semestres 9 al 12
@@ -83,27 +83,27 @@ const CURSOS = [
   { id: "DE16-0969", nombre: "Derecho Tributario III: Imposición al Consumo y Tributación Municipal", ciclo: 9, tipo: "OB", creditos: 2, requisitos: ["DE16-0861"] },
   { id: "DE16-0970", nombre: "Enseñanza Social de la Iglesia", ciclo: 9, tipo: "OB", creditos: 3, requisitos: ["DE16-0430", "DE16-0537"] },
   { id: "DE16-0971", nombre: "Taller de Negociación, Mediación y Conciliación", ciclo: 9, tipo: "OB", creditos: 2, requisitos: ["DE16-0857", "DE16-0428"] },
-  { id: "DE16-0972", nombre: "Derecho Procesal Laboral", ciclo: 9, tipo: "EE1", creditos: 2, requisitos: ["DE16-0967", "DE16-0638"] },
+  { id: "DE16-0972", nombre: "Derecho Procesal Laboral", ciclo: 9, tipo: "EE1", creditos: 2, requisitos: ["DE16-0858", "DE16-0638"] },
   { id: "DE16-0973", nombre: "Seminario de Derecho y Nuevas Tecnologías", ciclo: 9, tipo: "EE3", creditos: 2, requisitos: ["DE16-0859", "DE16-0857"] },
   { id: "DE16-0974", nombre: "Taller de Litigación Oral", ciclo: 9, tipo: "EE1", creditos: 2, requisitos: ["DE16-0860", "DE16-0967", "DE16-0638"] },
 
   /* SEMESTRE 10 */
-  { id: "DE16-1075", nombre: "Arbitraje", ciclo: 10, tipo: "OB", creditos: 3, requisitos: ["DE16-0971", "DE16-0968"] },
-  { id: "DE16-1076", nombre: "Derecho de Familia", ciclo: 10, tipo: "OB", creditos: 4, requisitos: ["DE16-0967", "DE16-0970"] },
+  { id: "DE16-1075", nombre: "Arbitraje", ciclo: 10, tipo: "OB", creditos: 3, requisitos: ["DE16-0971", "DE16-0968", "DE16-0535"] },
+  { id: "DE16-1076", nombre: "Derecho de Familia", ciclo: 10, tipo: "OB", creditos: 4, requisitos: ["DE16-0967", "DE16-0970", "DE16-0749"] },
   { id: "DE16-1077", nombre: "Ética Profesional", ciclo: 10, tipo: "OB", creditos: 2, requisitos: ["DE16-0537"] },
   { id: "DE16-1078", nombre: "Filosofía del Derecho", ciclo: 10, tipo: "OB", creditos: 3, requisitos: ["DE16-0751", "DE16-0537"] },
   { id: "DE16-1079", nombre: "Responsabilidad Civil y Seguros", ciclo: 10, tipo: "OB", creditos: 3, requisitos: ["DE16-0857"] },
   { id: "DE16-1080", nombre: "Seminario de Investigación Jurídica I", ciclo: 10, tipo: "OB", creditos: 3, requisitos: ["DE16-0643"] },
   { id: "DE16-1081", nombre: "Seminario de Derecho del Consumidor, Publicidad Comercial y PC.", ciclo: 10, tipo: "EE1-EE3", creditos: 2, requisitos: ["DE16-0532", "DE16-0968"] },
   { id: "DE16-1082", nombre: "Derecho Aduanero y Comercio Internacional", ciclo: 10, tipo: "EE2-EE3", creditos: 2, requisitos: ["DE16-0857", "DE16-0969"] },
-  { id: "DE16-1083", nombre: "Seminario de Contratación Estatal y APP", ciclo: 10, tipo: "EE4", creditos: 2, requisitos: ["DE16-0857", "DE16-0532"] },
+  { id: "DE16-1083", nombre: "Seminario de Contratación Estatal y APP", ciclo: 10, tipo: "EE4", creditos: 2, requisitos: ["DE16-0857", "DE16-0639"] },
 
   /* SEMESTRE 11 */
   { id: "DE16-1184", nombre: "Contratos Modernos", ciclo: 11, tipo: "OB", creditos: 3, requisitos: ["DE16-1079", "DE16-0968"] },
   { id: "DE16-1185", nombre: "Derecho de Sucesiones", ciclo: 11, tipo: "OB", creditos: 3, requisitos: ["DE16-1076"] },
-  { id: "DE16-1186", nombre: "Derechos Humanos", ciclo: 11, tipo: "OB", creditos: 3, requisitos: ["DE16-1078", "DE16-0430"] },
+  { id: "DE16-1186", nombre: "Derechos Humanos", ciclo: 11, tipo: "OB", creditos: 3, requisitos: ["DE16-1078", "DE16-0970"] },
   { id: "DE16-1187", nombre: "Elementos de Derecho Canónico y Eclesiástico del Estado", ciclo: 11, tipo: "OB", creditos: 3, requisitos: ["DE16-1076", "DE16-1078"] },
-  { id: "DE16-1188", nombre: "Financiamiento y Garantías", ciclo: 11, tipo: "OB", creditos: 3, requisitos: ["DE16-1079", "DE16-0968", "DE16-0748"] },
+  { id: "DE16-1188", nombre: "Financiamiento y Garantías", ciclo: 11, tipo: "OB", creditos: 3, requisitos: ["DE16-1079", "DE16-0968", "DE16-0748", "DE16-0639"] },
   { id: "DE16-1189", nombre: "Seminario de Investigación Jurídica II", ciclo: 11, tipo: "OB", creditos: 3, requisitos: ["DE16-1080"] },
   { id: "DE16-1190", nombre: "Derecho Bancario", ciclo: 11, tipo: "EE3", creditos: 2, requisitos: ["DE16-1079", "DE16-0968"] },
   { id: "DE16-1191", nombre: "Derecho Minero", ciclo: 11, tipo: "EE4", creditos: 2, requisitos: ["DE16-0968", "DE16-0639"] },
@@ -111,11 +111,11 @@ const CURSOS = [
 
   /* SEMESTRE 12 */
   { id: "DE16-1193", nombre: "Derecho Internacional Privado", ciclo: 12, tipo: "OB", creditos: 2, requisitos: ["DE16-1185"] },
-  { id: "DE16-1194", nombre: "Derecho Notarial y Registral", ciclo: 12, tipo: "OB", creditos: 3, requisitos: ["DE16-1185", "DE16-0968"] },
+  { id: "DE16-1194", nombre: "Derecho Notarial y Registral", ciclo: 12, tipo: "OB", creditos: 3, requisitos: ["DE16-1185", "DE16-0968", "DE16-0966"] },
   { id: "DE16-1195", nombre: "Inglés Técnico Jurídico", ciclo: 12, tipo: "OB", creditos: 2, requisitos: [] },
-  { id: "DE16-1206", nombre: "Práctica Empresarial: Mercantil, Tributario, Laboral y Gestión Empresarial", ciclo: 12, tipo: "OB", creditos: 2, requisitos: ["DE16-1188", "DE16-0969", "DE16-0967"] },
-  { id: "DE16-1207", nombre: "Práctica Forense Civil y Penal", ciclo: 12, tipo: "OB", creditos: 3, requisitos: ["DE16-0860", "DE16-0641"] },
-  { id: "DE16-1208", nombre: "Práctica Forense en Derecho Const. y Administrativo", ciclo: 12, tipo: "OB", creditos: 2, requisitos: ["DE16-0639", "DE16-1187"] },
+  { id: "DE16-1206", nombre: "Práctica Empresarial: Mercantil, Tributario, Laboral y Gestión Empresarial", ciclo: 12, tipo: "OB", creditos: 2, requisitos: ["DE16-1188", "DE16-1077", "DE16-0969", "DE16-0967"] },
+  { id: "DE16-1207", nombre: "Práctica Forense Civil y Penal", ciclo: 12, tipo: "OB", creditos: 3, requisitos: ["DE16-0860", "DE16-0750", "DE16-1077"] },
+  { id: "DE16-1208", nombre: "Práctica Forense en Derecho Const. y Administrativo", ciclo: 12, tipo: "OB", creditos: 2, requisitos: ["DE16-0639", "DE16-1187", "DE16-1186", "DE16-1077"] },
   { id: "DE16-1209", nombre: "Arbitraje Comercial Internacional y de Inversiones", ciclo: 12, tipo: "EE1-EE2", creditos: 2, requisitos: ["DE16-1075", "DE16-1188"] },
   { id: "DE16-1299", nombre: "Derecho de la Energía", ciclo: 12, tipo: "EE4", creditos: 2, requisitos: ["DE16-1192"] },
   { id: "DE16-1210", nombre: "Dirección y Liderazgo Estratégico", ciclo: 12, tipo: "EE3-EE4", creditos: 2, requisitos: ["DE16-0748", "DE16-1077", "DE16-0106"] }
