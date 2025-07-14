@@ -7,7 +7,6 @@ const leerCompletados = () =>
 const guardarCompletados = (lista) =>
   localStorage.setItem(LS_KEY, JSON.stringify(lista));
 
-// Objeto donde llevamos la cuenta de créditos aprobados
 const creditosPorTipo = {
   OB: 0,
   EH: 0,
@@ -17,12 +16,18 @@ const creditosPorTipo = {
   EE4: 0
 };
 
+const cursosContadosEE = {
+  EE1: 0,
+  EE2: 0,
+  EE3: 0,
+  EE4: 0
+};
+
 /* ---------- 2. Render ---------- */
 function renderMalla(cursos) {
   const contenedor = document.getElementById("malla");
-  contenedor.innerHTML = ""; // limpio por si se re‑renderiza
+  contenedor.innerHTML = "";
 
-  // Agrupo por ciclo
   const porCiclo = cursos.reduce((acc, c) => {
     (acc[c.ciclo] = acc[c.ciclo] || []).push(c);
     return acc;
@@ -42,15 +47,22 @@ function renderMalla(cursos) {
 
       porCiclo[ciclo].forEach((curso) => {
         const div = document.createElement("div");
-        div.className = `curso ${cssTipo(curso.tipo)}`;
 
-        // Mostrar EE1 - Curso nombre
-        div.textContent = (curso.tipo.startsWith("EE") ? `${curso.tipo} - ` : "") + curso.nombre;
+        const tipos = curso.tipo.split("-");
 
-        // Restaurar completado desde localStorage
+        if (tipos.some(t => t.startsWith("EE"))) {
+          div.classList.add("ee");
+        } else if (tipos.includes("EH")) {
+          div.classList.add("eh");
+        } else {
+          div.classList.add("obligatorio");
+        }
+
+        div.classList.add("curso");
+        div.textContent = (tipos.some(t => t.startsWith("EE")) ? `${curso.tipo} - ` : "") + curso.nombre;
+
         if (completados.has(curso.id)) div.classList.add("completado");
 
-        // Tooltip de prerrequisitos
         const tip = document.createElement("div");
         tip.className = "tooltip";
         tip.textContent = curso.requisitos.length
@@ -64,7 +76,6 @@ function renderMalla(cursos) {
           : "Sin prerrequisitos.";
         div.appendChild(tip);
 
-        // Click – marcar / desmarcar
         div.addEventListener("click", () => {
           div.classList.toggle("completado");
           toggleLS(curso.id);
@@ -78,37 +89,34 @@ function renderMalla(cursos) {
 }
 
 /* ---------- 3. Helpers ---------- */
-function cssTipo(tipo) {
-  if (tipo.startsWith("EE")) return tipo.toLowerCase(); // ee1, ee2, ...
-  if (tipo === "EH") return "eh";
-  return "obligatorio";
-}
-
 function toggleLS(id) {
   const lista = leerCompletados();
   const idx = lista.indexOf(id);
   if (idx === -1) lista.push(id);
   else lista.splice(idx, 1);
   guardarCompletados(lista);
-
-  // Recalcular créditos cuando se marca o desmarca un curso
   recalcularCreditos();
 }
 
-/* ---------- 4. Créditos aprobados ---------- */
+/* ---------- 4. Créditos y cantidad de cursos EE ---------- */
 function recalcularCreditos() {
-  // Reinicia conteo
   for (const k in creditosPorTipo) creditosPorTipo[k] = 0;
+  for (const k in cursosContadosEE) cursosContadosEE[k] = 0;
 
-  // Lee cursos completados
   const completados = new Set(leerCompletados());
+
   CURSOS.forEach(c => {
-    if (completados.has(c.id)) creditosPorTipo[c.tipo] += c.creditos;
+    if (!completados.has(c.id)) return;
+    const tipos = c.tipo.split("-");
+
+    tipos.forEach(t => {
+      if (creditosPorTipo[t] != null) creditosPorTipo[t] += c.creditos;
+      if (t.startsWith("EE")) cursosContadosEE[t]++;
+    });
   });
 
-  // Pinta lista
   const ul = document.getElementById("creditos-list");
-  ul.innerHTML = ""; // limpia
+  ul.innerHTML = "";
 
   const orden = ["OB", "EH", "EE1", "EE2", "EE3", "EE4"];
   orden.forEach(t => {
@@ -117,19 +125,30 @@ function recalcularCreditos() {
     ul.appendChild(li);
   });
 
-  // Total general
   const total = orden.reduce((s, t) => s + creditosPorTipo[t], 0);
-  document.getElementById("creditos-total").textContent =
-    `Total aprobados: ${total} créditos`;
+  document.getElementById("creditos-total").textContent = `Total aprobados: ${total} créditos`;
+
+  // Actualizar barra de progreso
+  const totalMaximo = 243;
+  const porcentaje = Math.round((total / totalMaximo) * 100);
+  document.getElementById("barra-progreso").style.width = `${porcentaje}%`;
+
+  // Mostrar conteo de cursos EE
+  const tabla = document.getElementById("tabla-cursos-ee");
+  tabla.innerHTML = "";
+  ["EE1", "EE2", "EE3", "EE4"].forEach(t => {
+    const row = document.createElement("li");
+    row.textContent = `${t}: ${cursosContadosEE[t]} curso${cursosContadosEE[t] !== 1 ? "s" : ""}`;
+    tabla.appendChild(row);
+  });
 }
 
 /* ---------- 5. Inicio ---------- */
 document.getElementById("btn-reset").addEventListener("click", () => {
   guardarCompletados([]);
-  renderMalla(CURSOS); // vuelve a dibujar
-  recalcularCreditos(); // y resetea créditos
+  renderMalla(CURSOS);
+  recalcularCreditos();
 });
 
-// Primera carga
 renderMalla(CURSOS);
 recalcularCreditos();
