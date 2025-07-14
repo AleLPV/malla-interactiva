@@ -95,6 +95,7 @@ const CURSOS = [
   { id: "DE16-1079", nombre: "Responsabilidad Civil y Seguros", ciclo: 10, tipo: "OB", creditos: 3, requisitos: ["DE16-0857"] },
   { id: "DE16-1080", nombre: "Seminario de Investigación Jurídica I", ciclo: 10, tipo: "OB", creditos: 3, requisitos: ["DE16-0643"] },
   { id: "DE16-1081", nombre: "Seminario de Derecho del Consumidor, Publicidad Comercial y PC.", ciclo: 10, tipo: "EE1-EE3", creditos: 2, requisitos: ["DE16-0532", "DE16-0968"] },
+  { id: "DE16-1082", nombre: "Derecho Aduanero y Comercio Internacional", ciclo: 10, tipo: "EE2-EE3", creditos: 2, requisitos: ["DE16-0857", "DE16-0969"] },
   { id: "DE16-1083", nombre: "Seminario de Contratación Estatal y APP", ciclo: 10, tipo: "EE4", creditos: 2, requisitos: ["DE16-0857", "DE16-0532"] },
 
   /* SEMESTRE 11 */
