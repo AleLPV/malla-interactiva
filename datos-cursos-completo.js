@@ -29,7 +29,7 @@ const CURSOS = [
   { id: "DE16-0427", nombre: "Derecho y Economía", ciclo: 4, tipo: "OB", creditos: 2, requisitos: ["DE16-0321"] },
   { id: "DE16-0428", nombre: "Psicología", ciclo: 4, tipo: "OB", creditos: 3, requisitos: ["DE16-0208"] },
   { id: "DE16-0429", nombre: "Sistema de Justicia y Mecanismos de Solución de Conflictos", ciclo: 4, tipo: "OB", creditos: 3, requisitos: ["DE16-0317"] },
-  { id: "DE16-0430", nombre: "Teología I", ciclo: 4, tipo: "EH", creditos: 3, requisitos: ["DE16-0208"] },
+  { id: "DE16-0430", nombre: "Teología I", ciclo: 4, tipo: "OB", creditos: 3, requisitos: ["DE16-0208"] },
 
   // BLOQUE 2: Semestres 5 al 8
     /* SEMESTRE 5 */
@@ -39,7 +39,7 @@ const CURSOS = [
   { id: "DE16-0534", nombre: "Derecho Penal Especial", ciclo: 5, tipo: "OB", creditos: 3, requisitos: ["DE16-0426"] },
   { id: "DE16-0535", nombre: "Derecho Procesal General", ciclo: 5, tipo: "OB", creditos: 3, requisitos: ["DE16-0429"] },
   { id: "DE16-0536", nombre: "Metodología de la Investigación Jurídica", ciclo: 5, tipo: "OB", creditos: 3, requisitos: ["DE16-0320", "DE16-0426", "DE16-0425", "DE16-0424"] },
-  { id: "DE16-0537", nombre: "Moral", ciclo: 5, tipo: "EH", creditos: 3, requisitos: ["DE16-0430", "DE16-0320"] },
+  { id: "DE16-0537", nombre: "Moral", ciclo: 5, tipo: "OB", creditos: 3, requisitos: ["DE16-0430", "DE16-0320"] },
 
   /* SEMESTRE 6 */
   { id: "DE16-0638", nombre: "Argumentación Jurídica", ciclo: 6, tipo: "OB", creditos: 3, requisitos: ["DE16-0536", "DE16-0535", "DE16-0533"] },
