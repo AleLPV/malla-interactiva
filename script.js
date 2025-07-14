@@ -1,4 +1,4 @@
-/* ---------- 1. Utilidades ---------- */
+/* ---------- 1. Utilidades ---------- */ 
 const LS_KEY = "cursosCompletados";
 
 const leerCompletados = () =>
@@ -132,9 +132,10 @@ function recalcularCreditos() {
   document.getElementById("creditos-total").textContent = `Total aprobados: ${total} créditos`;
 
   // Actualizar barra de progreso
-  const totalMaximo = 243; // Reemplaza por el total real de créditos si es otro
+  const totalMaximo = 243;
   const porcentaje = Math.round((total / totalMaximo) * 100);
   document.getElementById("barra-progreso").style.width = `${porcentaje}%`;
+  document.getElementById("porcentaje-progreso").textContent = `${porcentaje}%`;
 
   // Tabla de cursos EE aprobados
   const tabla = document.getElementById("tabla-cursos-ee");
