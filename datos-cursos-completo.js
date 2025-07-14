@@ -1,4 +1,4 @@
-/* ------------- BLBLOQUE 1 (semestres 1 al 4) ------------- */
+/* ------------- BLOQUE 1 (semestres 1 al 4) ------------- */
 const CURSOS = [
   /* SEMESTRE 1 */
   { id:"DE16-0101", nombre:"Comunicación", ciclo:1, tipo: "OB", creditos: 3, requisitos:[] },
@@ -39,7 +39,7 @@ const CURSOS = [
   { id:"DE16-0430", nombre:"Teología I", ciclo:4, tipo: "EH", creditos: 3, requisitos:["DE16-0208"] },
 ];
 
-/* ------------- BLBLOOQUE 2 (semestres 5 al 8) ------------- */
+/* ------------- BLOOQUE 2 (semestres 5 al 8) ------------- */
   /* SEMESTRE 5 */
   { id:"DE16-0531", nombre:"Acto Jurídico", ciclo:5, tipo: "OB", creditos: 4, requisitos:["DE16-0425"] },
   { id:"DE16-0532", nombre:"Derecho Administrativo I", ciclo:5, tipo: "OB", creditos: 3, requisitos:["DE16-0424"] },
