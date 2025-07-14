@@ -1,4 +1,4 @@
-/* ---------- 1.  Utilidades ---------- */
+/* ---------- 1. Utilidades ---------- */
 const LS_KEY = "cursosCompletados";
 
 const leerCompletados = () =>
@@ -17,10 +17,10 @@ const creditosPorTipo = {
   EE4: 0
 };
 
-/* ---------- 2.  Render ---------- */
+/* ---------- 2. Render ---------- */
 function renderMalla(cursos) {
   const contenedor = document.getElementById("malla");
-  contenedor.innerHTML = "";   // limpio por si se re‑renderiza
+  contenedor.innerHTML = ""; // limpio por si se re‑renderiza
 
   // Agrupo por ciclo
   const porCiclo = cursos.reduce((acc, c) => {
@@ -43,8 +43,11 @@ function renderMalla(cursos) {
       porCiclo[ciclo].forEach((curso) => {
         const div = document.createElement("div");
         div.className = `curso ${cssTipo(curso.tipo)}`;
+
+        // Mostrar EE1 - Curso nombre
         div.textContent = (curso.tipo.startsWith("EE") ? `${curso.tipo} - ` : "") + curso.nombre;
 
+        // Restaurar completado desde localStorage
         if (completados.has(curso.id)) div.classList.add("completado");
 
         // Tooltip de prerrequisitos
@@ -74,9 +77,9 @@ function renderMalla(cursos) {
     });
 }
 
-/* ---------- 3.  Helpers ---------- */
+/* ---------- 3. Helpers ---------- */
 function cssTipo(tipo) {
-  if (tipo.startsWith("EE")) return "ee";
+  if (tipo.startsWith("EE")) return tipo.toLowerCase(); // ee1, ee2, ...
   if (tipo === "EH") return "eh";
   return "obligatorio";
 }
@@ -87,41 +90,46 @@ function toggleLS(id) {
   if (idx === -1) lista.push(id);
   else lista.splice(idx, 1);
   guardarCompletados(lista);
+
+  // Recalcular créditos cuando se marca o desmarca un curso
+  recalcularCreditos();
 }
 
-/* ---------- 4.  Inicio ---------- */
-document.getElementById("btn-reset").addEventListener("click", () => {
-  guardarCompletados([]);
-  renderMalla(CURSOS); // CURSOS está en datos‑cursos.js
-});
-
-renderMalla(CURSOS);
-
+/* ---------- 4. Créditos aprobados ---------- */
 function recalcularCreditos() {
   // Reinicia conteo
   for (const k in creditosPorTipo) creditosPorTipo[k] = 0;
 
-  // Lee completados actuales
+  // Lee cursos completados
   const completados = new Set(leerCompletados());
   CURSOS.forEach(c => {
     if (completados.has(c.id)) creditosPorTipo[c.tipo] += c.creditos;
   });
 
-  // Pinta en pantalla
+  // Pinta lista
   const ul = document.getElementById("creditos-list");
   ul.innerHTML = ""; // limpia
 
-  // Orden de salida
-  const orden = ["OB","EH","EE1","EE2","EE3","EE4"];
-  orden.forEach(t =>{
+  const orden = ["OB", "EH", "EE1", "EE2", "EE3", "EE4"];
+  orden.forEach(t => {
     const li = document.createElement("li");
     li.textContent = `${t}: ${creditosPorTipo[t]} créditos`;
     ul.appendChild(li);
   });
 
   // Total general
-  const total = orden.reduce((s,t)=>s+creditosPorTipo[t],0);
+  const total = orden.reduce((s, t) => s + creditosPorTipo[t], 0);
   document.getElementById("creditos-total").textContent =
     `Total aprobados: ${total} créditos`;
 }
 
+/* ---------- 5. Inicio ---------- */
+document.getElementById("btn-reset").addEventListener("click", () => {
+  guardarCompletados([]);
+  renderMalla(CURSOS); // vuelve a dibujar
+  recalcularCreditos(); // y resetea créditos
+});
+
+// Primera carga
+renderMalla(CURSOS);
+recalcularCreditos();
