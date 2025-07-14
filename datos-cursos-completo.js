@@ -118,5 +118,4 @@ const CURSOS = [
   { id: "DE16-1209", nombre: "Arbitraje Comercial Internacional y de Inversiones", ciclo: 12, tipo: "EE1-EE2", creditos: 2, requisitos: ["DE16-1075", "DE16-1188"] },
   { id: "DE16-1299", nombre: "Derecho de la Energía", ciclo: 12, tipo: "EE4", creditos: 2, requisitos: ["DE16-1192"] },
   { id: "DE16-1210", nombre: "Dirección y Liderazgo Estratégico", ciclo: 12, tipo: "EE3-EE4", creditos: 2, requisitos: ["DE16-0748", "DE16-1077", "DE16-0106"] }
-
 ];
