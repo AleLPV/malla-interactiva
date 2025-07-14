@@ -13,14 +13,14 @@ const creditosPorTipo = {
   EE1: 0,
   EE2: 0,
   EE3: 0,
-  EE4: 0
+  EE4: 0,
 };
 
 const cursosContadosEE = {
   EE1: 0,
   EE2: 0,
   EE3: 0,
-  EE4: 0
+  EE4: 0,
 };
 
 /* ---------- 2. Render ---------- */
@@ -50,7 +50,7 @@ function renderMalla(cursos) {
 
         const tipos = curso.tipo.split("-");
 
-        if (tipos.some(t => t.startsWith("EE"))) {
+        if (tipos.some((t) => t.startsWith("EE"))) {
           div.classList.add("ee");
         } else if (tipos.includes("EH")) {
           div.classList.add("eh");
@@ -59,7 +59,8 @@ function renderMalla(cursos) {
         }
 
         div.classList.add("curso");
-        div.textContent = (tipos.some(t => t.startsWith("EE")) ? `${curso.tipo} - ` : "") + curso.nombre;
+        div.textContent =
+          tipos.some((t) => t.startsWith("EE")) ? `${curso.tipo} - ${curso.nombre}` : curso.nombre;
 
         if (completados.has(curso.id)) div.classList.add("completado");
 
@@ -79,6 +80,7 @@ function renderMalla(cursos) {
         div.addEventListener("click", () => {
           div.classList.toggle("completado");
           toggleLS(curso.id);
+          recalcularCreditos();
         });
 
         columna.appendChild(div);
@@ -95,7 +97,6 @@ function toggleLS(id) {
   if (idx === -1) lista.push(id);
   else lista.splice(idx, 1);
   guardarCompletados(lista);
-  recalcularCreditos();
 }
 
 /* ---------- 4. Créditos y cantidad de cursos EE ---------- */
@@ -105,12 +106,14 @@ function recalcularCreditos() {
 
   const completados = new Set(leerCompletados());
 
-  CURSOS.forEach(c => {
+  CURSOS.forEach((c) => {
     if (!completados.has(c.id)) return;
-    const tipos = c.tipo.split("-");
 
-    tipos.forEach(t => {
-      if (creditosPorTipo[t] != null) creditosPorTipo[t] += c.creditos;
+    const tipos = c.tipo.split("-");
+    tipos.forEach((t) => {
+      if (creditosPorTipo[t] != null) {
+        creditosPorTipo[t] += Number(c.creditos || 0);
+      }
       if (t.startsWith("EE")) cursosContadosEE[t]++;
     });
   });
@@ -119,7 +122,7 @@ function recalcularCreditos() {
   ul.innerHTML = "";
 
   const orden = ["OB", "EH", "EE1", "EE2", "EE3", "EE4"];
-  orden.forEach(t => {
+  orden.forEach((t) => {
     const li = document.createElement("li");
     li.textContent = `${t}: ${creditosPorTipo[t]} créditos`;
     ul.appendChild(li);
@@ -129,14 +132,14 @@ function recalcularCreditos() {
   document.getElementById("creditos-total").textContent = `Total aprobados: ${total} créditos`;
 
   // Actualizar barra de progreso
-  const totalMaximo = 243;
+  const totalMaximo = 243; // Reemplaza por el total real de créditos si es otro
   const porcentaje = Math.round((total / totalMaximo) * 100);
   document.getElementById("barra-progreso").style.width = `${porcentaje}%`;
 
-  // Mostrar conteo de cursos EE
+  // Tabla de cursos EE aprobados
   const tabla = document.getElementById("tabla-cursos-ee");
   tabla.innerHTML = "";
-  ["EE1", "EE2", "EE3", "EE4"].forEach(t => {
+  ["EE1", "EE2", "EE3", "EE4"].forEach((t) => {
     const row = document.createElement("li");
     row.textContent = `${t}: ${cursosContadosEE[t]} curso${cursosContadosEE[t] !== 1 ? "s" : ""}`;
     tabla.appendChild(row);
