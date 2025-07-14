@@ -2,51 +2,50 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Malla Curricular – Derecho</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Curricular de Derecho</title>
   <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
-  <h1>MALLA CURRICULAR DE DERECHO</h1>
+  <header>
+    <h1>Malla Curricular - Derecho</h1>
+    <button id="btn-reset">Reiniciar selección</button>
+  </header>
 
-  <!-- Contenedor principal -->
-  <div id="malla"></div>
+  <main>
+    <section id="malla" class="malla"></section>
 
- <!-- Panel de créditos -->
-<div id="creditos-box">
-  <h3>Créditos aprobados</h3>
+    <!-- Créditos aprobados: Panel organizado en 2 cuadros -->
+    <div class="creditos-container" style="display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 2rem;">
+      <!-- Cuadro 1: Créditos obligatorios y humanidades -->
+      <div class="cuadro-obligatorios" style="flex: 1; border: 2px solid #ccc; border-radius: 10px; padding: 1rem; min-width: 300px;">
+        <h3 style="margin-top: 0;">Créditos aprobados</h3>
+        <ul id="creditos-list" style="list-style: none; padding-left: 0;"></ul>
+        <p id="creditos-total" style="font-weight: bold; margin-top: 1rem;"></p>
+      </div>
 
-  <!-- Lista de créditos por tipo -->
-  <ul id="creditos-list"></ul>
-
-  <!-- Conteo de cursos EE aprobados -->
-  <ul id="tabla-cursos-ee" style="margin-top: 10px; font-size: 13px;"></ul>
-
-  <!-- Total de créditos aprobados -->
-  <strong id="creditos-total"></strong>
-
-  <!-- Barra de progreso -->
-  <div id="barra-container">
-    <div id="barra-progreso"></div>
-  </div>
-</div>
-
-  <!-- Leyenda de colores -->
-  <div id="leyenda">
-    <div class="leyenda-item">
-      <div class="leyenda-box leyenda-ob"></div> Obligatorio
+      <!-- Cuadro 2: Cursos electivos y mención -->
+      <div class="cuadro-ee" style="flex: 1; border: 2px solid #ccc; border-radius: 10px; padding: 1rem; min-width: 300px;">
+        <h3 style="margin-top: 0;">Electivos por mención</h3>
+        <ul id="tabla-cursos-ee" style="list-style: none; padding-left: 0;"></ul>
+        <hr>
+        <div class="leyenda-ee" style="font-size: 0.9rem; color: #555;">
+          <p><strong>EE1:</strong> Mención en Prevención y Solución de Controversias</p>
+          <p><strong>EE2:</strong> Mención en Derecho Internacional</p>
+          <p><strong>EE3:</strong> Mención en Derecho Empresarial</p>
+          <p><strong>EE4:</strong> Mención en Administración y Regulación</p>
+        </div>
+      </div>
     </div>
-    <div class="leyenda-item">
-      <div class="leyenda-box leyenda-eh"></div> Electivo Humanidades (EH)
-    </div>
-    <div class="leyenda-item">
-      <div class="leyenda-box leyenda-ee"></div> Electivo de Especialidad (EE1–EE4)
-    </div>
-  </div>
 
-  <!-- Botón para reiniciar -->
-  <button id="btn-reset">Desmarcar todos los cursos</button>
+    <!-- Barra de progreso -->
+    <div style="margin-top: 2rem;">
+      <div style="background: #eee; border-radius: 20px; overflow: hidden; height: 20px;">
+        <div id="barra-progreso" style="background: #28a745; height: 100%; width: 0%; transition: width 0.5s;"></div>
+      </div>
+    </div>
+  </main>
 
-  <!-- Scripts -->
   <script src="datos-cursos-completo.js"></script>
   <script src="script.js"></script>
 </body>
