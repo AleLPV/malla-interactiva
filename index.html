@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Malla Curricular de Derecho</title>
 
-  <!-- Fuente bonita: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Fuente por defecto: Inter (Google Fonts) -->
+  <link id="gf-link" 
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" 
+        rel="stylesheet">
 
+  <!-- Tus estilos principales -->
   <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
@@ -18,7 +19,7 @@
     <div class="actions">
       <label class="switch">
         <input id="toggle-whatif" type="checkbox" />
-        <span>Modo What‑If</span>
+        <span>Modo What-If</span>
       </label>
       <button id="btn-pdf" title="Descargar PDF">Descargar PDF</button>
       <button id="btn-reset" title="Reiniciar selección">Reiniciar selección</button>
@@ -58,24 +59,58 @@
     </div>
   </main>
 
-  <!-- Panel flotante de tema / colores -->
-  <button id="btn-theme" class="theme-btn" title="Personalizar colores">🎨</button>
-  <div id="panel-theme" class="theme-panel" hidden>
-    <h4>Colores de la malla</h4>
-    <label>Fondo <input type="color" id="c-bg"></label>
-    <label>Texto <input type="color" id="c-text"></label>
-    <label>OB <input type="color" id="c-ob"></label>
-    <label>EH <input type="color" id="c-eh"></label>
-    <label>EE <input type="color" id="c-ee"></label>
-    <label>Encabezado semestre <input type="color" id="c-sem"></label>
-    <label>Progreso <input type="color" id="c-progress"></label>
+  <!-- Botón de tema -->
+  <button id="btn-theme" class="theme-btn" title="Personalizar tema">🎨</button>
+
+  <!-- Overlay para cerrar al hacer click afuera -->
+  <div id="theme-overlay" class="theme-overlay" hidden></div>
+
+  <!-- Panel flotante de tema / colores / tipografías -->
+  <div id="panel-theme" class="theme-panel" hidden role="dialog" aria-modal="true">
+    <h4>Personalizar tema</h4>
+
+    <fieldset class="grp">
+      <legend>Colores</legend>
+      <label>Fondo <input type="color" id="c-bg"></label>
+      <label>Texto <input type="color" id="c-text"></label>
+      <label>OB <input type="color" id="c-ob"></label>
+      <label>EH <input type="color" id="c-eh"></label>
+      <label>EE <input type="color" id="c-ee"></label>
+      <label>Encabezado semestre <input type="color" id="c-sem"></label>
+      <label>Progreso <input type="color" id="c-progress"></label>
+      <label>Borde de curso <input type="color" id="c-curso-border"></label>
+      <label>Contorno “cursando” <input type="color" id="c-cursando-outline"></label>
+    </fieldset>
+
+    <fieldset class="grp">
+      <legend>Tipografía</legend>
+      <label style="display:flex; gap:.5rem; align-items:center;">
+        Familia
+        <select id="font-family">
+          <option value="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">Inter (default)</option>
+          <option value="Roboto, system-ui, -apple-system, Segoe UI, sans-serif">Roboto</option>
+          <option value="'Poppins', system-ui, -apple-system, Segoe UI, sans-serif">Poppins</option>
+          <option value="'Merriweather', Georgia, serif">Merriweather (serif)</option>
+          <option value="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">System UI</option>
+        </select>
+      </label>
+      <label>Tamaño base 
+        <input type="number" id="font-size" min="12" max="22" step="1" value="16"> px
+      </label>
+      <label>Google Fonts URL (opcional)
+        <input id="font-url" type="url" placeholder="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" />
+      </label>
+      <button id="font-apply">Aplicar fuente</button>
+    </fieldset>
+
     <div class="panel-actions">
       <button id="btn-theme-reset">Restablecer</button>
       <button id="btn-theme-close">Cerrar</button>
     </div>
-    <p class="hint">Tip: abre/cierra con <kbd>Alt</kbd> + <kbd>T</kbd></p>
+    <p class="hint">Tips: <kbd>Alt</kbd> + <kbd>T</kbd> abre/cierra · <kbd>Esc</kbd> cierra · Los cambios se guardan.</p>
   </div>
 
+  <!-- Scripts -->
   <script src="datos-cursos-completo.js"></script>
   <script src="script.js"></script>
 </body>
