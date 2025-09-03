@@ -6,12 +6,12 @@
   <title>Malla Curricular de Derecho</title>
 
   <!-- Fuente por defecto: Inter (Google Fonts) -->
-  <link id="gf-link" 
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" 
+  <link id="gf-link"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
         rel="stylesheet">
 
-  <!-- Tus estilos principales -->
-  <link rel="stylesheet" href="estilos.css" />
+  <!-- OJO: usamos tu nombre real del CSS -->
+  <link rel="stylesheet" href="estos.css" />
 </head>
 <body>
   <header class="topbar">
@@ -30,7 +30,6 @@
   <main>
     <section id="malla" class="malla"></section>
 
-    <!-- Panel de créditos y EE -->
     <div class="creditos-container">
       <div class="cuadro-obligatorios">
         <h3>Créditos aprobados</h3>
@@ -50,7 +49,6 @@
       </div>
     </div>
 
-    <!-- Barra de progreso (solo OB) -->
     <div class="progreso">
       <div class="barra">
         <div id="barra-progreso"></div>
@@ -59,8 +57,8 @@
     </div>
   </main>
 
-  <!-- Botón de tema -->
-  <button id="btn-theme" class="theme-btn" title="Personalizar tema">🎨</button>
+  <!-- Botón de tema: rueda cromática -->
+  <button id="btn-theme" class="theme-btn color-wheel" aria-label="Personalizar tema"></button>
 
   <!-- Overlay para cerrar al hacer click afuera -->
   <div id="theme-overlay" class="theme-overlay" hidden></div>
@@ -94,7 +92,7 @@
           <option value="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">System UI</option>
         </select>
       </label>
-      <label>Tamaño base 
+      <label>Tamaño base
         <input type="number" id="font-size" min="12" max="22" step="1" value="16"> px
       </label>
       <label>Google Fonts URL (opcional)
@@ -110,8 +108,8 @@
     <p class="hint">Tips: <kbd>Alt</kbd> + <kbd>T</kbd> abre/cierra · <kbd>Esc</kbd> cierra · Los cambios se guardan.</p>
   </div>
 
-  <!-- Scripts -->
-  <script src="datos-cursos-completo.js"></script>
+  <!-- OJO: usamos tu nombre real del archivo de datos -->
+  <script src="datos-curso-completo.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
