@@ -4,48 +4,77 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Malla Curricular de Derecho</title>
+
+  <!-- Fuente bonita: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
-  <header>
+  <header class="topbar">
     <h1>Malla Curricular - Derecho</h1>
-    <button id="btn-reset">Reiniciar selección</button>
+    <div class="actions">
+      <label class="switch">
+        <input id="toggle-whatif" type="checkbox" />
+        <span>Modo What‑If</span>
+      </label>
+      <button id="btn-pdf" title="Descargar PDF">Descargar PDF</button>
+      <button id="btn-reset" title="Reiniciar selección">Reiniciar selección</button>
+      <button id="btn-clear-cursando" title="Quitar marcas de cursando">Limpiar “cursando”</button>
+    </div>
   </header>
 
   <main>
     <section id="malla" class="malla"></section>
 
-    <!-- Créditos aprobados: Panel organizado en 2 cuadros -->
-    <div class="creditos-container" style="display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 2rem;">
-      <!-- Cuadro 1: Créditos obligatorios y humanidades -->
-      <div class="cuadro-obligatorios" style="flex: 1; border: 2px solid #ccc; border-radius: 10px; padding: 1rem; min-width: 300px;">
-        <h3 style="margin-top: 0;">Créditos aprobados</h3>
-        <ul id="creditos-list" style="list-style: none; padding-left: 0;"></ul>
-        <p id="creditos-total" style="font-weight: bold; margin-top: 1rem;"></p>
+    <!-- Panel de créditos y EE -->
+    <div class="creditos-container">
+      <div class="cuadro-obligatorios">
+        <h3>Créditos aprobados</h3>
+        <ul id="creditos-list"></ul>
+        <p id="creditos-total" class="total"></p>
       </div>
-
-      <!-- Cuadro 2: Cursos electivos y mención -->
-      <div class="cuadro-ee" style="flex: 1; border: 2px solid #ccc; border-radius: 10px; padding: 1rem; min-width: 300px;">
-        <h3 style="margin-top: 0;">Electivos por mención</h3>
-        <ul id="tabla-cursos-ee" style="list-style: none; padding-left: 0;"></ul>
+      <div class="cuadro-ee">
+        <h3>Electivos por mención</h3>
+        <ul id="tabla-cursos-ee"></ul>
         <hr>
-        <div class="leyenda-ee" style="font-size: 0.9rem; color: black; background: none; padding: 0;">
-          <p><strong>EE1:</strong> Mención en Prevención y Solución de Controversias</p>
-          <p><strong>EE2:</strong> Mención en Derecho Internacional</p>
-          <p><strong>EE3:</strong> Mención en Derecho Empresarial</p>
-          <p><strong>EE4:</strong> Mención en Administración y Regulación</p>
+        <div class="leyenda-ee">
+          <p><strong>EE1:</strong> Prevención y Solución de Controversias</p>
+          <p><strong>EE2:</strong> Derecho Internacional</p>
+          <p><strong>EE3:</strong> Derecho Empresarial</p>
+          <p><strong>EE4:</strong> Administración y Regulación</p>
         </div>
       </div>
     </div>
 
-    <!-- Barra de progreso con porcentaje -->
-    <div style="margin-top: 2rem;">
-      <div style="background: #eee; border-radius: 20px; overflow: hidden; height: 20px;">
-        <div id="barra-progreso" style="background: #28a745; height: 100%; width: 0%; transition: width 0.5s;"></div>
+    <!-- Barra de progreso (solo OB) -->
+    <div class="progreso">
+      <div class="barra">
+        <div id="barra-progreso"></div>
       </div>
-      <p id="porcentaje-progreso" style="text-align: right; font-size: 0.9rem; margin-top: 0.3rem; color: #333;">0%</p>
+      <p id="porcentaje-progreso" class="porcentaje">0% (OB)</p>
     </div>
   </main>
+
+  <!-- Panel flotante de tema / colores -->
+  <button id="btn-theme" class="theme-btn" title="Personalizar colores">🎨</button>
+  <div id="panel-theme" class="theme-panel" hidden>
+    <h4>Colores de la malla</h4>
+    <label>Fondo <input type="color" id="c-bg"></label>
+    <label>Texto <input type="color" id="c-text"></label>
+    <label>OB <input type="color" id="c-ob"></label>
+    <label>EH <input type="color" id="c-eh"></label>
+    <label>EE <input type="color" id="c-ee"></label>
+    <label>Encabezado semestre <input type="color" id="c-sem"></label>
+    <label>Progreso <input type="color" id="c-progress"></label>
+    <div class="panel-actions">
+      <button id="btn-theme-reset">Restablecer</button>
+      <button id="btn-theme-close">Cerrar</button>
+    </div>
+    <p class="hint">Tip: abre/cierra con <kbd>Alt</kbd> + <kbd>T</kbd></p>
+  </div>
 
   <script src="datos-cursos-completo.js"></script>
   <script src="script.js"></script>
