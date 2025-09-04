@@ -47,6 +47,11 @@ body{
 .obligatorio:hover{background:var(--ob-hover)}
 .obligatorio.completado{background:var(--ob-done); color:#fff; text-decoration:line-through}
 .eh{background:var(--eh)}
+/* ==== Mejora visual: oscurecer completados ==== */
+.curso.completado{
+  filter: grayscale(30%) brightness(0.85);
+  opacity: 0.9;
+}
 .eh:hover{background:var(--eh-hover)}
 .eh.completado{background:var(--eh-done); color:#fff; text-decoration:line-through}
 .ee{background:var(--ee)}
