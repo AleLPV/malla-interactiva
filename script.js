@@ -1,57 +1,85 @@
+/* =========================================================
+   Malla Interactiva – script.js
+   Funciones: What-If, Cursando, Lo planeado, Tema, Fuente
+   ========================================================= */
+
 /* ===== Claves de almacenamiento ===== */
-const LS_KEY_DONE  = "cursosCompletados";   // aprobados
+const LS_KEY_DONE  = "cursosCompletados";   // aprobados (aprobado = completado)
 const LS_KEY_CUR   = "cursosCursando";      // cursando
-const LS_KEY_THEME = "themeColors";         // colores
-const LS_KEY_FONT  = "themeFont";           // tipografía
+const LS_KEY_PLAN  = "cursosPlaneados";     // planeados (wishlist)
+const LS_KEY_THEME = "themeColors";         // colores del tema
+const LS_KEY_FONT  = "themeFont";           // tipografía (family/size/url)
 
-/* ===== Estado ===== */
-let WHAT_IF = false;
-let whatIfSet = new Set();
+/* ===== Estado global ===== */
+let WHAT_IF   = false;          // simulación (no persiste)
+let PLAN_MODE = false;          // si está activo el modo “Lo planeado”
+let whatIfSet = new Set();      // selección temporal para What-If
 
+/* ===== Helpers de lectura/escritura ===== */
 const readJSON = (k, d) => JSON.parse(localStorage.getItem(k) || d);
+
 const leerCompletados = () => readJSON(LS_KEY_DONE, "[]");
-const guardarCompletados = (lista) => localStorage.setItem(LS_KEY_DONE, JSON.stringify(lista));
+const guardarCompletados = (arr) => localStorage.setItem(LS_KEY_DONE, JSON.stringify(arr));
+
 const leerCursando = () => readJSON(LS_KEY_CUR, "[]");
-const guardarCursando = (lista) => localStorage.setItem(LS_KEY_CUR, JSON.stringify(lista));
+const guardarCursando = (arr) => localStorage.setItem(LS_KEY_CUR, JSON.stringify(arr));
 
-const creditosPorTipo = { OB:0, EH:0, EE1:0, EE2:0, EE3:0, EE4:0 };
-const cursosContadosEE = { EE1:0, EE2:0, EE3:0, EE4:0 };
-const LS_KEY_PLAN = "cursosPlaneados";   // NUEVO: ids planeados (persistente)
-let PLAN_MODE = false;                   // NUEVO: si está activo el modo planeado
-
-const leerPlaneados    = () => JSON.parse(localStorage.getItem(LS_KEY_PLAN) || "[]");
+const leerPlaneados = () => readJSON(LS_KEY_PLAN, "[]");
 const guardarPlaneados = (arr) => localStorage.setItem(LS_KEY_PLAN, JSON.stringify(arr));
+
+function toggleLS(key, id){
+  const arr = readJSON(key, "[]");
+  const i = arr.indexOf(id);
+  if (i === -1) arr.push(id); else arr.splice(i,1);
+  localStorage.setItem(key, JSON.stringify(arr));
+}
+function toggleCursando(id){
+  const arr = leerCursando();
+  const i = arr.indexOf(id);
+  if (i === -1) arr.push(id); else arr.splice(i,1);
+  guardarCursando(arr);
+}
 function togglePlaneado(id){
   const arr = leerPlaneados();
   const i = arr.indexOf(id);
   if (i === -1) arr.push(id); else arr.splice(i,1);
   guardarPlaneados(arr);
 }
-/* ===== Render malla ===== */
+
+/* ===== Acumuladores de créditos ===== */
+const creditosPorTipo = { OB:0, EH:0, EE1:0, EE2:0, EE3:0, EE4:0 };
+const cursosContadosEE = { EE1:0, EE2:0, EE3:0, EE4:0 };
+
+/* =========================================================
+   Render principal
+   ========================================================= */
 function renderMalla(cursos){
   const contenedor = document.getElementById("malla");
   contenedor.innerHTML = "";
 
-  const porCiclo = cursos.reduce((acc,c)=>{ (acc[c.ciclo] ||= []).push(c); return acc; },{});
-  const completados = WHAT_IF ? new Set(whatIfSet) : new Set(leerCompletados());
-  const cursando    = new Set(leerCursando());
-  // === marcar planeados (siempre visible y persistente) ===
-const planeados = new Set(leerPlaneados());
-if (planeados.has(curso.id) && !div.classList.contains("completado")){
-  div.classList.add("planeado");
-}
+  // Agrupar por ciclo
+  const porCiclo = cursos.reduce((acc,c)=>{ (acc[c.ciclo] ||= []).push(c); return acc; }, {});
 
+  // Sets de estado actuales
+  const completadosSet = WHAT_IF ? new Set(whatIfSet) : new Set(leerCompletados());
+  const cursandoSet    = new Set(leerCursando());
+  const planeadosSet   = new Set(leerPlaneados());
+
+  // Pintar columnas
   Object.keys(porCiclo).sort((a,b)=>+a-+b).forEach(ciclo=>{
     const col = document.createElement("div");
     col.className = "semestre";
+
     const h2 = document.createElement("h2");
     h2.textContent = `Semestre ${ciclo}`;
     col.appendChild(h2);
 
+    // Cursos del ciclo
     porCiclo[ciclo].forEach(curso=>{
       const div = document.createElement("div");
       const tipos = String(curso.tipo).split("-");
 
+      // Tipo visual
       if (tipos.some(t=>t.startsWith("EE"))) div.classList.add("ee");
       else if (tipos.includes("EH")) div.classList.add("eh");
       else div.classList.add("obligatorio");
@@ -59,14 +87,17 @@ if (planeados.has(curso.id) && !div.classList.contains("completado")){
       div.classList.add("curso");
       div.textContent = tipos.some(t=>t.startsWith("EE")) ? `${curso.tipo} - ${curso.nombre}` : curso.nombre;
 
-      if (completados.has(curso.id)) div.classList.add("completado");
-      if (cursando.has(curso.id) && !div.classList.contains("completado")) div.classList.add("cursando");
+      // Estados iniciales
+      if (completadosSet.has(curso.id)) div.classList.add("completado");
+      if (cursandoSet.has(curso.id) && !div.classList.contains("completado")) div.classList.add("cursando");
+      if (planeadosSet.has(curso.id) && !div.classList.contains("completado")) div.classList.add("planeado");
 
+      // Tooltip (prerrequisitos + dependencias)
       const tip = document.createElement("div");
       tip.className = "tooltip";
       const reqTxt = curso.requisitos?.length
         ? "Prerrequisitos:\n" + curso.requisitos.map(id=>{
-            const r = CURSOS.find(x=>x.id===id); return r?`• ${r.nombre}`:id;
+            const r = CURSOS.find(x=>x.id===id); return r ? `• ${r.nombre}` : id;
           }).join("\n")
         : "Sin prerrequisitos.";
       const depTxt = (()=>{
@@ -76,69 +107,51 @@ if (planeados.has(curso.id) && !div.classList.contains("completado")){
       tip.textContent = reqTxt + depTxt + "\n\nTips:\n• Click = Aprobado  ·  Ctrl/Cmd + click = Marcar ‘cursando’.";
       div.appendChild(tip);
 
+      /* ------- Handler de click (What-If / Cursando / Planeado / Aprobado) ------- */
       div.addEventListener("click", (ev)=>{
-  // ➊ MODO "LO PLANEADO": al estar activo, el click solo alterna planeado (y guarda)
-  if (PLAN_MODE){
-    togglePlaneado(curso.id);
+        // 1) Modo “Lo planeado”: solo alterna planeado y sale
+        if (PLAN_MODE){
+          togglePlaneado(curso.id);
 
-    // reflejar visual inmediato si NO está aprobado
-    if (!div.classList.contains("completado")){
-      div.classList.toggle("planeado");
-    }else{
-      // si estuviera aprobado, no tiene sentido marcar planeado: asegúrate de quitarlo
-      const set = new Set(leerPlaneados());
-      set.delete(curso.id);
-      guardarPlaneados([...set]);
-      div.classList.remove("planeado");
-    }
-    return; // MUY IMPORTANTE: no ejecutar el flujo normal de aprobado/cursando
-  }
+          if (!div.classList.contains("completado")){
+            div.classList.toggle("planeado");
+          }else{
+            // Si está aprobado, no mantener planeado
+            const set = new Set(leerPlaneados());
+            set.delete(curso.id);
+            guardarPlaneados([...set]);
+            div.classList.remove("planeado");
+          }
+          return;
+        }
 
-  // ➋ Ctrl/Cmd + click => "cursando" (como ya lo tenías)
-  if (ev.ctrlKey || ev.metaKey){
-    toggleCursando(curso.id);
-    div.classList.toggle("cursando");
-    recalcularCreditos();
-    return;
-  }
-
-  // ➌ Click normal => aprobado / desaprobado (respeta What-If)
-  if (WHAT_IF){
-    if (whatIfSet.has(curso.id)) whatIfSet.delete(curso.id); else whatIfSet.add(curso.id);
-  }else{
-    toggleLS(LS_KEY_DONE, curso.id);
-  }
-  div.classList.toggle("completado");
-
-  // ➍ Si pasa a "aprobado": quitar estados que ya no aplican (cursando y planeado)
-  if (div.classList.contains("completado")){
-    // quitar "cursando" si estaba
-    const cur = new Set(leerCursando());
-    if (cur.has(curso.id)) { cur.delete(curso.id); guardarCursando([...cur]); div.classList.remove("cursando"); }
-
-    // quitar "planeado" si estaba  ← (esto es 3.4)
-    const pl = new Set(leerPlaneados());
-    if (pl.has(curso.id)) { pl.delete(curso.id); guardarPlaneados([...pl]); div.classList.remove("planeado"); }
-  }
-
-  recalcularCreditos();
-});
-      if (ev.ctrlKey || ev.metaKey){
+        // 2) Ctrl/Cmd + click => Cursando
+        if (ev.ctrlKey || ev.metaKey){
           toggleCursando(curso.id);
           div.classList.toggle("cursando");
           recalcularCreditos();
           return;
         }
+
+        // 3) Click normal => Aprobado / Desaprobado (respecto a What-If)
         if (WHAT_IF){
           if (whatIfSet.has(curso.id)) whatIfSet.delete(curso.id); else whatIfSet.add(curso.id);
         }else{
           toggleLS(LS_KEY_DONE, curso.id);
         }
         div.classList.toggle("completado");
+
+        // 4) Si quedó aprobado, limpiar estados incompatibles
         if (div.classList.contains("completado")){
+          // quitar "cursando"
           const cur = new Set(leerCursando());
           if (cur.has(curso.id)){ cur.delete(curso.id); guardarCursando([...cur]); div.classList.remove("cursando"); }
+
+          // quitar "planeado"
+          const pl = new Set(leerPlaneados());
+          if (pl.has(curso.id)){ pl.delete(curso.id); guardarPlaneados([...pl]); div.classList.remove("planeado"); }
         }
+
         recalcularCreditos();
       });
 
@@ -149,29 +162,18 @@ if (planeados.has(curso.id) && !div.classList.contains("completado")){
   });
 }
 
-/* ===== Helpers ===== */
-function toggleLS(key, id){
-  const lista = readJSON(key, "[]");
-  const idx = lista.indexOf(id);
-  if (idx === -1) lista.push(id); else lista.splice(idx,1);
-  localStorage.setItem(key, JSON.stringify(lista));
-}
-function toggleCursando(id){
-  const lista = leerCursando();
-  const idx = lista.indexOf(id);
-  if (idx === -1) lista.push(id); else lista.splice(idx,1);
-  guardarCursando(lista);
-}
-
-/* ===== Créditos / % sólo OB ===== */
+/* =========================================================
+   Créditos y % solo OB
+   ========================================================= */
 function recalcularCreditos(){
-  for (const k in creditosPorTipo) creditosPorTipo[k]=0;
-  for (const k in cursosContadosEE) cursosContadosEE[k]=0;
+  // Reset contadores
+  for (const k in creditosPorTipo) creditosPorTipo[k] = 0;
+  for (const k in cursosContadosEE) cursosContadosEE[k] = 0;
 
-  const completados = WHAT_IF ? new Set(whatIfSet) : new Set(leerCompletados());
+  const completadosSet = WHAT_IF ? new Set(whatIfSet) : new Set(leerCompletados());
 
   CURSOS.forEach(c=>{
-    if (!completados.has(c.id)) return;
+    if (!completadosSet.has(c.id)) return;
     const tipos = String(c.tipo).split("-");
     tipos.forEach(t=>{
       if (creditosPorTipo[t] != null) creditosPorTipo[t] += Number(c.creditos || 0);
@@ -179,6 +181,7 @@ function recalcularCreditos(){
     });
   });
 
+  // Lista por tipo
   const ul = document.getElementById("creditos-list");
   ul.innerHTML = "";
   const orden = ["OB","EH","EE1","EE2","EE3","EE4"];
@@ -187,21 +190,28 @@ function recalcularCreditos(){
     li.textContent = `${t}: ${creditosPorTipo[t]} créditos`;
     ul.appendChild(li);
   });
+
   const total = orden.reduce((s,t)=> s + creditosPorTipo[t], 0);
   document.getElementById("creditos-total").textContent = `Total aprobados: ${total} créditos`;
 
-  const totalObMax = CURSOS.filter(c=> String(c.tipo).split("-").includes("OB"))
-                           .reduce((s,c)=> s + Number(c.creditos||0), 0);
+  // % solo OB
+  const totalObMax = CURSOS
+    .filter(c=> String(c.tipo).split("-").includes("OB"))
+    .reduce((s,c)=> s + Number(c.creditos || 0), 0);
   const pct = Math.round(((creditosPorTipo.OB || 0) / (totalObMax || 1)) * 100);
   document.getElementById("barra-progreso").style.width = `${pct}%`;
   document.getElementById("porcentaje-progreso").textContent = `${pct}% (OB)`;
 }
 
-/* ===== Tema (colores) ===== */
+/* =========================================================
+   Tema (colores) y Tipografías
+   ========================================================= */
 function applyTheme(theme){
   const root = document.documentElement;
   const map = {
-    "--bg": theme.bg, "--text": theme.text, "--primary": theme.progress,
+    "--bg": theme.bg,
+    "--text": theme.text,
+    "--primary": theme.progress,
     "--ob": theme.ob, "--ob-hover": theme.obHover || theme.ob, "--ob-done": theme.obDone || theme.ob,
     "--eh": theme.eh, "--eh-hover": theme.ehHover || theme.eh, "--eh-done": theme.ehDone || theme.eh,
     "--ee": theme.ee, "--ee-hover": theme.eeHover || theme.ee, "--ee-done": theme.eeDone || theme.ee,
@@ -239,21 +249,29 @@ function rgbToHex(rgb){
 function initThemeInputs(){
   const get = (v)=> getComputedStyle(document.documentElement).getPropertyValue(v).trim();
   const t = readJSON(LS_KEY_THEME, "null") || {
-    bg:get('--bg'), text:get('--text'), ob:get('--ob'), eh:get('--eh'), ee:get('--ee'),
+    bg:get('--bg'), text:get('--text'),
+    ob:get('--ob'), eh:get('--eh'), ee:get('--ee'),
     sem:get('--sem-header'), progress:get('--primary'),
     cursoBorder:get('--curso-border'), cursandoOutline:get('--cursando-outline')
   };
   const i = themeInputs();
-  i.bg.value = rgbToHex(t.bg); i.text.value = rgbToHex(t.text);
-  i.ob.value = rgbToHex(t.ob); i.eh.value = rgbToHex(t.eh); i.ee.value = rgbToHex(t.ee);
-  i.sem.value = rgbToHex(t.sem); i.progress.value = rgbToHex(t.progress);
+  if (!i.bg) return; // si el panel no existe en esta vista, salir
+
+  i.bg.value = rgbToHex(t.bg);
+  i.text.value = rgbToHex(t.text);
+  i.ob.value = rgbToHex(t.ob);
+  i.eh.value = rgbToHex(t.eh);
+  i.ee.value = rgbToHex(t.ee);
+  i.sem.value = rgbToHex(t.sem);
+  i.progress.value = rgbToHex(t.progress);
   i.cursoBorder.value = rgbToHex(t.cursoBorder || '#0000');
-  i.cursandoOutline.value = rgbToHex(t.cursandoOutline);
+  i.cursandoOutline.value = rgbToHex(t.cursandoOutline || '#f5a623');
 }
 function saveThemeFromInputs(){
   const i = themeInputs();
   const theme = {
-    bg:i.bg.value, text:i.text.value, ob:i.ob.value, eh:i.eh.value, ee:i.ee.value,
+    bg:i.bg.value, text:i.text.value,
+    ob:i.ob.value, eh:i.eh.value, ee:i.ee.value,
     sem:i.sem.value, progress:i.progress.value,
     cursoBorder:i.cursoBorder.value, cursandoOutline:i.cursandoOutline.value
   };
@@ -261,7 +279,7 @@ function saveThemeFromInputs(){
   applyTheme(theme);
 }
 
-/* ===== Tipografía ===== */
+/* Tipografías */
 function applyFont(cfg){
   const root = document.documentElement;
   if (cfg.family) root.style.setProperty('--font-family', cfg.family);
@@ -277,72 +295,96 @@ function loadFont(){
   const f = readJSON(LS_KEY_FONT, "null");
   if (!f) return;
   applyFont(f);
-  const sel = document.getElementById('font-family'); if (sel && f.family) sel.value = f.family;
-  const size = document.getElementById('font-size');  if (size && f.size) size.value = f.size;
-  const url  = document.getElementById('font-url');   if (url && f.url) url.value = f.url;
+  // Prefill del panel si existe
+  const sel  = document.getElementById('font-family'); if (sel && f.family) sel.value = f.family;
+  const size = document.getElementById('font-size');  if (size && f.size)  size.value = f.size;
+  const url  = document.getElementById('font-url');   if (url && f.url)    url.value  = f.url;
 }
 
-/* ===== UI ===== */
+/* =========================================================
+   UI (botones y paneles)
+   ========================================================= */
 function initUI(){
-  // Reset aprobados
-  document.getElementById("btn-reset").addEventListener("click",()=>{
+  // Reset aprobados (y what-if temporal)
+  document.getElementById("btn-reset")?.addEventListener("click", ()=>{
     if (!WHAT_IF){ localStorage.setItem(LS_KEY_DONE, "[]"); }
     whatIfSet.clear();
     renderMalla(CURSOS); recalcularCreditos();
   });
 
-  // Limpiar cursando
-  document.getElementById("btn-clear-cursando").addEventListener("click",()=>{
+  // Limpiar “cursando”
+  document.getElementById("btn-clear-cursando")?.addEventListener("click", ()=>{
     localStorage.setItem(LS_KEY_CUR, "[]");
     renderMalla(CURSOS); recalcularCreditos();
   });
 
   // PDF
-  document.getElementById("btn-pdf").addEventListener("click",()=> window.print());
+  document.getElementById("btn-pdf")?.addEventListener("click", ()=> window.print());
 
   // What-If
-  const chk = document.getElementById("toggle-whatif");
-  chk.addEventListener("change",()=>{
-    WHAT_IF = chk.checked;
-    whatIfSet = new Set(leerCompletados());
-    renderMalla(CURSOS); recalcularCreditos();
+  const chkWI = document.getElementById("toggle-whatif");
+  if (chkWI){
+    chkWI.addEventListener("change", ()=>{
+      WHAT_IF = chkWI.checked;
+      whatIfSet = new Set(leerCompletados());   // parte desde el estado real
+      renderMalla(CURSOS); recalcularCreditos();
+    });
+  }
+
+  // === Botón “Lo planeado” ===
+  const btnPlan = document.getElementById("btn-plan-mode");
+  if (btnPlan){
+    btnPlan.addEventListener("click", ()=>{
+      PLAN_MODE = !PLAN_MODE;
+      btnPlan.classList.toggle("active", PLAN_MODE);
+      btnPlan.textContent = PLAN_MODE ? "Marcando planeados…" : "Lo planeado";
+      document.body.classList.toggle("mode-plan-on", PLAN_MODE);
+    });
+  }
+
+  // === Panel de Tema (overlay) ===
+  const panel   = document.getElementById("panel-theme");
+  const overlay = document.getElementById("theme-overlay");
+  const btnOpen = document.getElementById("btn-theme");
+  const btnClose= document.getElementById("btn-theme-close");
+  const btnReset= document.getElementById("btn-theme-reset");
+
+  const openPanel  = ()=>{ if(panel&&overlay){ panel.hidden=false; overlay.hidden=false; initThemeInputs(); } };
+  const closePanel = ()=>{ if(panel&&overlay){ panel.hidden=true;  overlay.hidden=true;  } };
+  const togglePanel= ()=> panel && (panel.hidden ? openPanel() : closePanel());
+
+  btnOpen?.addEventListener("click", togglePanel);
+  btnClose?.addEventListener("click", closePanel);
+  overlay?.addEventListener("click", closePanel);
+  window.addEventListener("keydown", (e)=>{
+    if (e.key === 'Escape') closePanel();
+    if (e.altKey && e.key.toLowerCase() === 't') togglePanel();
   });
 
-  // Panel de tema
-  const panel = document.getElementById("panel-theme");
-  const overlay = document.getElementById("theme-overlay");
-  const btnTheme = document.getElementById("btn-theme");
-  const btnClose = document.getElementById("btn-theme-close");
-  const btnReset = document.getElementById("btn-theme-reset");
-
-  const openPanel = ()=>{ panel.hidden=false; overlay.hidden=false; initThemeInputs(); };
-  const closePanel = ()=>{ panel.hidden=true; overlay.hidden=true; };
-  const togglePanel = ()=> panel.hidden ? openPanel() : closePanel();
-
-  btnTheme.addEventListener("click", togglePanel);
-  btnClose.addEventListener("click", closePanel);
-  overlay.addEventListener("click", closePanel);
-  window.addEventListener("keydown", (e)=>{ if(e.key==='Escape') closePanel(); if (e.altKey && e.key.toLowerCase()==='t') togglePanel(); });
-
   // Cambios de color en vivo
-  Object.values(themeInputs()).forEach(inp=> inp.addEventListener("input", saveThemeFromInputs));
+  const inputs = themeInputs();
+  Object.values(inputs).forEach(inp=>{
+    if (inp) inp.addEventListener("input", saveThemeFromInputs);
+  });
 
-  // Aplicar tipografía
-  document.getElementById('font-apply').addEventListener('click', ()=>{
-    const family = document.getElementById('font-family').value;
-    const size   = parseInt(document.getElementById('font-size').value,10) || 16;
-    const url    = document.getElementById('font-url').value.trim();
+  // Aplicar tipografía desde el panel
+  document.getElementById('font-apply')?.addEventListener('click', ()=>{
+    const family = document.getElementById('font-family')?.value;
+    const size   = parseInt(document.getElementById('font-size')?.value || "16", 10);
+    const url    = (document.getElementById('font-url')?.value || "").trim();
     applyFont({ family, size, url });
   });
 
-  // Reset tema
-  btnReset.addEventListener('click', ()=>{
+  // Reset tema (volver a variables por defecto)
+  btnReset?.addEventListener('click', ()=>{
     localStorage.removeItem(LS_KEY_THEME);
     location.reload();
   });
 }
 
-/* ===== Inicio ===== */
+/* =========================================================
+   Entrada
+   ========================================================= */
 loadTheme();
 loadFont();
 renderMalla(CURSOS);
