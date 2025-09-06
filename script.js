@@ -16,7 +16,17 @@ const guardarCursando = (lista) => localStorage.setItem(LS_KEY_CUR, JSON.stringi
 
 const creditosPorTipo = { OB:0, EH:0, EE1:0, EE2:0, EE3:0, EE4:0 };
 const cursosContadosEE = { EE1:0, EE2:0, EE3:0, EE4:0 };
+const LS_KEY_PLAN = "cursosPlaneados";   // NUEVO: ids planeados (persistente)
+let PLAN_MODE = false;                   // NUEVO: si está activo el modo planeado
 
+const leerPlaneados    = () => JSON.parse(localStorage.getItem(LS_KEY_PLAN) || "[]");
+const guardarPlaneados = (arr) => localStorage.setItem(LS_KEY_PLAN, JSON.stringify(arr));
+function togglePlaneado(id){
+  const arr = leerPlaneados();
+  const i = arr.indexOf(id);
+  if (i === -1) arr.push(id); else arr.splice(i,1);
+  guardarPlaneados(arr);
+}
 /* ===== Render malla ===== */
 function renderMalla(cursos){
   const contenedor = document.getElementById("malla");
