@@ -35,6 +35,11 @@ function renderMalla(cursos){
   const porCiclo = cursos.reduce((acc,c)=>{ (acc[c.ciclo] ||= []).push(c); return acc; },{});
   const completados = WHAT_IF ? new Set(whatIfSet) : new Set(leerCompletados());
   const cursando    = new Set(leerCursando());
+  // === marcar planeados (siempre visible y persistente) ===
+const planeados = new Set(leerPlaneados());
+if (planeados.has(curso.id) && !div.classList.contains("completado")){
+  div.classList.add("planeado");
+}
 
   Object.keys(porCiclo).sort((a,b)=>+a-+b).forEach(ciclo=>{
     const col = document.createElement("div");
