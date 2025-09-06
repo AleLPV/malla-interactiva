@@ -77,7 +77,53 @@ if (planeados.has(curso.id) && !div.classList.contains("completado")){
       div.appendChild(tip);
 
       div.addEventListener("click", (ev)=>{
-        if (ev.ctrlKey || ev.metaKey){
+  // ➊ MODO "LO PLANEADO": al estar activo, el click solo alterna planeado (y guarda)
+  if (PLAN_MODE){
+    togglePlaneado(curso.id);
+
+    // reflejar visual inmediato si NO está aprobado
+    if (!div.classList.contains("completado")){
+      div.classList.toggle("planeado");
+    }else{
+      // si estuviera aprobado, no tiene sentido marcar planeado: asegúrate de quitarlo
+      const set = new Set(leerPlaneados());
+      set.delete(curso.id);
+      guardarPlaneados([...set]);
+      div.classList.remove("planeado");
+    }
+    return; // MUY IMPORTANTE: no ejecutar el flujo normal de aprobado/cursando
+  }
+
+  // ➋ Ctrl/Cmd + click => "cursando" (como ya lo tenías)
+  if (ev.ctrlKey || ev.metaKey){
+    toggleCursando(curso.id);
+    div.classList.toggle("cursando");
+    recalcularCreditos();
+    return;
+  }
+
+  // ➌ Click normal => aprobado / desaprobado (respeta What-If)
+  if (WHAT_IF){
+    if (whatIfSet.has(curso.id)) whatIfSet.delete(curso.id); else whatIfSet.add(curso.id);
+  }else{
+    toggleLS(LS_KEY_DONE, curso.id);
+  }
+  div.classList.toggle("completado");
+
+  // ➍ Si pasa a "aprobado": quitar estados que ya no aplican (cursando y planeado)
+  if (div.classList.contains("completado")){
+    // quitar "cursando" si estaba
+    const cur = new Set(leerCursando());
+    if (cur.has(curso.id)) { cur.delete(curso.id); guardarCursando([...cur]); div.classList.remove("cursando"); }
+
+    // quitar "planeado" si estaba  ← (esto es 3.4)
+    const pl = new Set(leerPlaneados());
+    if (pl.has(curso.id)) { pl.delete(curso.id); guardarPlaneados([...pl]); div.classList.remove("planeado"); }
+  }
+
+  recalcularCreditos();
+});
+      if (ev.ctrlKey || ev.metaKey){
           toggleCursando(curso.id);
           div.classList.toggle("cursando");
           recalcularCreditos();
