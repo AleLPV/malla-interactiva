@@ -127,3 +127,18 @@ body{
   .creditos-container{break-inside:avoid}
   .semestre{page-break-inside:avoid}
 }
+/* === Estado: PLANEADO (wishlist) === */
+.curso.planeado{
+  outline: 2px solid #ffca28;          /* amarillo */
+  outline-offset: 2px;
+  background-image: linear-gradient(0deg, rgba(255,230,0,.18), rgba(255,230,0,.18));
+}
+
+/* Botón activo para indicar modo planeado */
+#btn-plan-mode.active{
+  background: #f9a825;                  /* amarillo fuerte */
+  color: #111;
+}
+
+/* (opcional) cursor distinto mientras el modo está activo */
+body.mode-plan-on .curso{ cursor: cell; }
